@@ -20,6 +20,7 @@ public class GameScreen implements Screen, InputProcessor {
 	
 	public GameScreen(PetShopEscape game){
 		this.game = game;
+		Gdx.audio.newSound(Gdx.files.internal("music/Hydrate-Kenny_Beltrey.ogg")).play();
 	}
 	
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.obviam.starassault.model.Block;
+import net.obviam.starassault.model.CheckPoint;
 import net.obviam.starassault.model.Guard;
 import net.obviam.starassault.model.Turtle;
 import net.obviam.starassault.model.World;
@@ -106,8 +107,12 @@ public class WorldRenderer {
 	}
 	
 	private void drawCheckpoints(){
-		spriteBatch.draw(checkPointTexture, 10 * ppuX, 2 * ppuY, 
-				Turtle.SIZE * ppuX / 2,Turtle.SIZE * ppuY /2);	
+		for(CheckPoint checkPoint : world.getCheckPoints()){
+			spriteBatch.draw(checkPointTexture, checkPoint.getPosition().x * ppuX, 
+					checkPoint.getPosition().y * ppuY, 
+					CheckPoint.SIZE * ppuX , CheckPoint.SIZE * ppuY);	
+			
+		}
 	}
 	
 	private void drawDoor(){

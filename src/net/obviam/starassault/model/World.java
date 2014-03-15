@@ -6,22 +6,26 @@ import java.util.List;
 import net.obviam.starassault.view.WorldRenderer;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 
 public class World {
 	
 	List<Block> blocks = new ArrayList<Block>();
-	Array<Guard> guards = new Array<Guard>();
+	List<CheckPoint> checkPoints = new ArrayList<CheckPoint>();
+	List<Guard> guards = new ArrayList<Guard>();
 	Turtle turtle;
+	private CheckPoint firstCheckPoint;
 	
 	public List<Block> getBlocks(){
 		return blocks;
 	}
-	public Array<Guard> getGuards(){
+	public List<Guard> getGuards(){
 		return guards;
 	}
 	public Turtle getTurtle(){
 		return turtle;
+	}
+	public List<CheckPoint> getCheckPoints(){
+		return checkPoints;
 	}
 	
 	public World(){
@@ -29,6 +33,10 @@ public class World {
 	}
 	private void createDemoWorld() {
 		turtle = new Turtle(new Vector2(10,2));
+		checkPoints.add(new CheckPoint(new Vector2(10,2)));
+		checkPoints.add(new CheckPoint(new Vector2(11.3f,8f)));
+		firstCheckPoint = checkPoints.get(0);
+		
 		guards.add(new Guard(new Vector2(7.25f,1),17,1.35f));
 		guards.add(new Guard(new Vector2(5,6.15f),9,0.9f));
 		guards.add(new Guard(new Vector2(8.1f,9.15f),9,2f));
@@ -64,8 +72,9 @@ public class World {
 		}
 
 	}
-	public void reset() {
-		createDemoWorld();
+
+	public CheckPoint getFirstCheckPoint() {
+		return firstCheckPoint;
 	}
 
 

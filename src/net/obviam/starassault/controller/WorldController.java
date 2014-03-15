@@ -5,6 +5,7 @@ import java.util.Map;
 
 import net.obviam.starassault.PetShopEscape;
 import net.obviam.starassault.model.Block;
+import net.obviam.starassault.model.CheckPoint;
 import net.obviam.starassault.model.Guard;
 import net.obviam.starassault.model.Turtle;
 import net.obviam.starassault.model.Turtle.State;
@@ -21,6 +22,7 @@ public class WorldController {
 	
 	private Turtle turtle;
 	private World world;
+	private CheckPoint lastCheckPoint;
 	private PetShopEscape overallGame;
 	
 	static Map<Keys,Boolean> keys = new HashMap<WorldController.Keys,Boolean>();
@@ -35,6 +37,7 @@ public class WorldController {
 		this.world = world;
 		this.overallGame = game;
 		this.turtle = world.getTurtle();
+		this.lastCheckPoint = world.getFirstCheckPoint();
 	}
 	
 	public void leftPressed(){
@@ -117,15 +120,20 @@ public class WorldController {
 	private void handleCollisions(){
 		Rectangle bobBox = new Rectangle(turtle.getPosition().x, turtle.getPosition().y, Turtle.SIZE, Turtle.SIZE);
 		
+		for(CheckPoint checkPoint : world.getCheckPoints()){
+			Rectangle checkPointBox = new Rectangle(checkPoint.getPosition().x, checkPoint.getPosition().y, 
+					CheckPoint.SIZE, CheckPoint.SIZE);
+			if(bobBox.overlaps(checkPointBox)){
+				this.lastCheckPoint = checkPoint;
+			}
+		}
+		
 		for(Guard guard : world.getGuards()){
 			Rectangle guardBox = new Rectangle(guard.getPosition().x, guard.getPosition().y, Guard.SIZE, Guard.SIZE);
 			if(bobBox.overlaps(guardBox)){
 				System.out.println("YOU LOSE!");
-				for(Guard guard2 : world.getGuards()){
-					guard2.getPosition().x = guard2.getInitialPosition().x;
-					guard2.getPosition().y = guard2.getInitialPosition().y;
-				}
-				overallGame.create();
+				turtle.getPosition().x = lastCheckPoint.getPosition().x;
+				turtle.getPosition().y = lastCheckPoint.getPosition().y;
 				return;
 			}
 		}
